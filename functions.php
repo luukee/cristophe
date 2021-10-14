@@ -125,3 +125,10 @@ function custom_pre_get_posts_query($q)
 	$q->set('tax_query', $tax_query);
 }
 add_action('woocommerce_product_query', 'custom_pre_get_posts_query');
+
+// remove product image zoom: https://generatepress.com/forums/topic/remove-zoom-effect-on-woocommerce-product-image/#post-357129
+function remove_image_zoom_support()
+{
+	remove_theme_support('wc-product-gallery-zoom');
+}
+add_action('wp', 'remove_image_zoom_support', 100);
