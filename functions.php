@@ -15,64 +15,72 @@
 /**
  * Loads parent and child themes' style.css
  */
-function orbisius_ct_bridge_child_theme_child_theme_enqueue_styles() {
-    $parent_style = 'orbisius_ct_bridge_child_theme_parent_style';
-    $parent_base_dir = 'bridge';
+function orbisius_ct_bridge_child_theme_child_theme_enqueue_styles()
+{
+	$parent_style = 'orbisius_ct_bridge_child_theme_parent_style';
+	$parent_base_dir = 'bridge';
 
-    wp_enqueue_style( $parent_style,
-        get_template_directory_uri() . '/style.css',
-        array(),
-        wp_get_theme( $parent_base_dir ) ? wp_get_theme( $parent_base_dir )->get('Version') : ''
-    );
+	wp_enqueue_style(
+		$parent_style,
+		get_template_directory_uri() . '/style.css',
+		array(),
+		wp_get_theme($parent_base_dir) ? wp_get_theme($parent_base_dir)->get('Version') : ''
+	);
 
-    wp_enqueue_style( $parent_style . '_child_style',
-        get_stylesheet_directory_uri() . '/style.css',
-        array( $parent_style ),
-        wp_get_theme()->get('Version')
-    );
+	wp_enqueue_style(
+		$parent_style . '_child_style',
+		get_stylesheet_directory_uri() . '/css/custom.min.css',
+		array($parent_style),
+		wp_get_theme()->get('Version')
+	);
 }
+add_action('wp_enqueue_scripts', 'orbisius_ct_bridge_child_theme_child_theme_enqueue_styles', 20);
 
-add_action( 'wp_enqueue_scripts', 'orbisius_ct_bridge_child_theme_child_theme_enqueue_styles', 20 );
-
-function custom_shop_menu( $atts ) {
+function custom_shop_menu($atts)
+{
 	$uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 	$uri_segments = explode('/', $uri_path);
-	
+
 	$current_page = $uri_segments[2];
 	$shampoo = '';
 	$conditioner = '';
 	$styling = '';
 	$kit = '';
-	if($current_page == 'shampoo'){
+	if ($current_page == 'shampoo') {
 		$shampoo = 'active';
-	} if($current_page == 'conditioner'){
+	}
+	if ($current_page == 'conditioner') {
 		$conditioner = 'active';
-	} if($current_page == 'styling'){
+	}
+	if ($current_page == 'styling') {
 		$styling = 'active';
-	} if($current_page == 'kit'){
+	}
+	if ($current_page == 'kit') {
 		$kit = 'active';
 	}
-	
-	$html = '<div class="shop_header cs-shop-header"><nav class="shop_menu"><ul><li class="s-free-shipp">Free Shipping on Order Over $50</li><li class="p-category '.$shampoo.'"><a href="'.home_url().'/product-category/shampoo/">Shampoo</a></li><li class="p-category '.$conditioner.'"><a href="'.home_url().'/product-category/conditioner/">conditioner</a></li><li class="p-category '.$styling.'"><a href="'.home_url().'/product-category/styling/">styling</a></li><li class="p-category '.$kit.'"><a href="'.home_url().'/product-category/kit/">kits</a></li></ul></div><div class="cart-list"><ul><li><a href="'.home_url().'/my-account">Sign In</a> / </li><li><a href="'.home_url().'/my-account"> My Account</a> | </li><li class="my-cart">'.do_shortcode('[cart_button items_in_cart_text="My Cart" show_items="true"]').'</li></ul></nav></div>';		
+
+	$html = '<div class="shop_header cs-shop-header"><nav class="shop_menu"><ul><li class="s-free-shipp">Free Shipping on Order Over $50</li><li class="p-category ' . $shampoo . '"><a href="' . home_url() . '/product-category/shampoo/">Shampoo</a></li><li class="p-category ' . $conditioner . '"><a href="' . home_url() . '/product-category/conditioner/">conditioner</a></li><li class="p-category ' . $styling . '"><a href="' . home_url() . '/product-category/styling/">styling</a></li><li class="p-category ' . $kit . '"><a href="' . home_url() . '/product-category/kit/">kits</a></li></ul></div><div class="cart-list"><ul><li><a href="' . home_url() . '/my-account">Sign In</a> / </li><li><a href="' . home_url() . '/my-account"> My Account</a> | </li><li class="my-cart">' . do_shortcode('[cart_button items_in_cart_text="My Cart" show_items="true"]') . '</li></ul></nav></div>';
 	return $html;
 }
-add_shortcode( 'ShopMenu', 'custom_shop_menu' );
+add_shortcode('ShopMenu', 'custom_shop_menu');
 
 
 //* removes default woocommerce tabs from single product page
-remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_product_data_accordion' );
+remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_product_data_accordion');
 
 
-add_action ( "woocommerce_before_shop_loop_item", "after_li_start", 9 );
- 
-function after_li_start () {
-    echo '<a href="'.get_the_permalink().'" class="Link-woo">';
+add_action("woocommerce_before_shop_loop_item", "after_li_start", 9);
+
+function after_li_start()
+{
+	echo '<a href="' . get_the_permalink() . '" class="Link-woo">';
 }
- 
-add_action ( "woocommerce_after_shop_loop_item", "before_li_start", 10 );
- 
-function before_li_start () {
-    echo "</a>";
+
+add_action("woocommerce_after_shop_loop_item", "before_li_start", 10);
+
+function before_li_start()
+{
+	echo "</a>";
 }
 
 
@@ -85,17 +93,18 @@ function before_li_start () {
  * @param array $rates Array of rates found for the package.
  * @return array
  */
-function my_hide_shipping_when_free_is_available( $rates ) {
+function my_hide_shipping_when_free_is_available($rates)
+{
 	$free = array();
-	foreach ( $rates as $rate_id => $rate ) {
-		if ( 'free_shipping' === $rate->method_id ) {
-			$free[ $rate_id ] = $rate;
+	foreach ($rates as $rate_id => $rate) {
+		if ('free_shipping' === $rate->method_id) {
+			$free[$rate_id] = $rate;
 			break;
 		}
 	}
-	return ! empty( $free ) ? $free : $rates;
+	return !empty($free) ? $free : $rates;
 }
-add_filter( 'woocommerce_package_rates', 'my_hide_shipping_when_free_is_available', 100 );
+add_filter('woocommerce_package_rates', 'my_hide_shipping_when_free_is_available', 100);
 
 // Change the Number of WooCommerce Products Displayed Per Page
 add_filter('loop_shop_per_page', 'lw_loop_shop_per_page', 30);
@@ -125,3 +134,32 @@ function custom_pre_get_posts_query($q)
 	$q->set('tax_query', $tax_query);
 }
 add_action('woocommerce_product_query', 'custom_pre_get_posts_query');
+
+// remove product image zoom: https://generatepress.com/forums/topic/remove-zoom-effect-on-woocommerce-product-image/#post-357129
+function remove_image_zoom_support()
+{
+	remove_theme_support('wc-product-gallery-zoom');
+}
+add_action('wp', 'remove_image_zoom_support', 100);
+
+/**
+ * @snippet       check if current product belongs to product category @ Shop Page
+ * @how-to        Get CustomizeWoo.com FREE
+ * @sourcecode    https://www.businessbloomer.com/woocommerce-check-if-products-belongs-to-category-tag/
+ * @author        Rodolfo Melogli
+ * @compatible    WooCommerce 3.5.4
+ */
+
+add_action('woocommerce_before_shop_loop_item_title', 'bbloomer_print_message_if_product_belongs_to_category_chairs');
+
+function bbloomer_print_message_if_product_belongs_to_category_chairs()
+{
+	global $product;
+	$product_id = $product->get_id();
+	if (has_term('recommended', 'product_tag', $product_id)) {
+		echo '<span class="onsale reco"><span class="onsale-inner">Stylist Pick</span></span>';
+	}
+}
+
+// Removing the Proceed to checkout button from the Cart page
+remove_action( 'woocommerce_proceed_to_checkout','woocommerce_button_proceed_to_checkout', 20);
