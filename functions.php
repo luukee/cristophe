@@ -162,4 +162,56 @@ function bbloomer_print_message_if_product_belongs_to_category_chairs()
 }
 
 // Removing the Proceed to checkout button from the Cart page
-remove_action( 'woocommerce_proceed_to_checkout','woocommerce_button_proceed_to_checkout', 20);
+// remove_action( 'woocommerce_proceed_to_checkout','woocommerce_button_proceed_to_checkout', 20);
+
+// function bridge_child_wc_notice_showing() {
+	// if store notice is active print out styles to 
+	// disable add to cart button(with hover text) on products,
+	// remove cart checkout button
+	// & hide the top nav cart link
+// 	if ( is_store_notice_showing() ) {
+// 		remove_action( 'woocommerce_proceed_to_checkout','woocommerce_button_proceed_to_checkout', 20);
+// 		echo '<style>
+// 				ul#menu-new-shop-menu li.menu-item-type-post_type:nth-child(2) {
+// 					display: none;
+// 				}
+// 				.woocommerce button.button, .woocommerce-page button.button, .woocommerce-page input[type=submit],
+// 				a.checkout-button.button.alt.wc-forward {
+// 					pointer-events: none;
+// 					opacity: 0.5;
+// 					text-decoration: line-through;
+// 				}
+// 				.woocommerce div.product .cart {
+// 					position: relative;
+// 				}
+// 				.woocommerce div.product .cart:hover::after {
+// 					content: "Down for maintenance";
+// 					position: absolute;
+// 					width: auto;
+// 					height: auto;
+// 					font-size: 14px;
+// 					left: 0;
+// 					top: -60px;
+// 					color: white;
+// 					padding: 1em;
+// 					background: #b6364b;
+// 				}
+// 			</style>
+// 		';
+// 	} else {
+// 		echo '
+// 		<p class="woocommerce-store-notice demo_store" data-notice-id="1a7c467c78ca698a1e489a1cdaeefee4" style="">
+// 		Dear Customer,<br><br>
+// 		Our website will be closed for upgrades at our warehouse from Monday, November 14th through Friday, November 18th.
+// 		Cristophe Professional Products will be available again on our website starting Saturday, November 19th at 12:00am.<br><br>
+// 		We apologize for any inconvenience.
+// 		<br><br>
+// 		Cristophe Professional<br>
+// 		Management<br>
+// 		<a href="#" class="woocommerce-store-notice__dismiss-link">Dismiss</a></p>
+// 		';
+// 	}
+// } 
+// add_action( 'wp', 'bridge_child_wc_notice_showing' );
+
+// Site will be down for maintenance Monday, November 14th through Friday, November 18th.
